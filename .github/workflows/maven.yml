@@ -28,19 +28,51 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [8, 11, 17, 21]
-        experimental: [false]
-        os: [ubuntu-latest, ubuntu-22.04-ppc64le]
-        architecture: [x64, ppc64le] # Added architecture to matrix
+        # Explicit combinations of os, architecture, java version, and experimental flag
         include:
-          - java: 23
-            experimental: true
-            os: ubuntu-latest
+          # Ubuntu Latest with x64 Architecture
+          - os: ubuntu-latest
             architecture: x64
-          - java: 24-ea
-            experimental: true
-            os: ubuntu-latest
+            java: 8
+            experimental: false
+          - os: ubuntu-latest
             architecture: x64
+            java: 11
+            experimental: false
+          - os: ubuntu-latest
+            architecture: x64
+            java: 17
+            experimental: false
+          - os: ubuntu-latest
+            architecture: x64
+            java: 21
+            experimental: false
+          - os: ubuntu-latest
+            architecture: x64
+            java: 23
+            experimental: true
+          - os: ubuntu-latest
+            architecture: x64
+            java: 24-ea
+            experimental: true
+
+          # Ubuntu 22.04 PPC64LE with PPC64LE Architecture
+          - os: ubuntu-22.04-ppc64le
+            architecture: ppc64le
+            java: 8
+            experimental: false
+          - os: ubuntu-22.04-ppc64le
+            architecture: ppc64le
+            java: 11
+            experimental: false
+          - os: ubuntu-22.04-ppc64le
+            architecture: ppc64le
+            java: 17
+            experimental: false
+          - os: ubuntu-22.04-ppc64le
+            architecture: ppc64le
+            java: 21
+            experimental: false
 
     continue-on-error: ${{ matrix.experimental }}
 
@@ -59,7 +91,7 @@ jobs:
       - name: Set up JDK ${{ matrix.java }}
         uses: actions/setup-java@b36c23c0d998641eff861008f374ee103c25ac73 # v4.4.0
         with:
-          architecture: ${{ matrix.architecture }} # Added matrix architecture
+          architecture: ${{ matrix.architecture }} # Architecture set from matrix
           distribution: "temurin"
           java-version: ${{ matrix.java }}
       - name: Build with Maven
